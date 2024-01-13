@@ -1,0 +1,50 @@
+---
+- name: Playbook para instalar la pila LAMP
+  hosts: frontend
+  become: yes
+
+  tasks:
+
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+
+    - name: Instalar el servidor web Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Instalar PHP y los módulos necesarios
+      apt: 
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+        state: present
+
+    - name: Reiniciar el servidor web Apache
+      service:
+        name: apache2
+        state: restarted
+
+
+    - name: Copiar el archivo de conf de apache
+      copy:
+        src: /home/ubuntu/Ansible_wordpress/practica3/templates/000-default.conf
+        dest: /var/www/html/
+        mode: 0755
+   
+    - name: Copiar el archivo phpinfo.php
+      copy:
+        src: /home/ubuntu/Ansible_wordpress/practica3/php/phpinfo.php
+        dest: /var/www/html/
+        mode: 0755
+    
+    - name: Cambiar el propietario del directorio /var/www/html
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        recurse: yes
+  
+  
