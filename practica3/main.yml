@@ -1,0 +1,6 @@
+---
+- import_playbook: playbooks/InstallLampFrontend.yml
+- import_playbook: playbooks/InstallLampbackend.yml
+- import_playbook: playbooks/DeployBackend.yml
+- import_playbook: playbooks/DeployFrontend.yml
+- import_playbook: playbooks/config_https.yml
