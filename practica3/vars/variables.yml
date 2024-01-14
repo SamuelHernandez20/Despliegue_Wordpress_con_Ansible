@@ -1,0 +1,18 @@
+Wordpress:
+    WORDPRESS_DB_NAME: wordpress
+    WORDPRESS_DB_USER: wp_user
+    WORDPRESS_DB_PASSWORD: wppass
+    WORDPRESS_DB_HOST: 172.31.93.99
+    MYSQL_PRIVATE: 172.31.93.99
+    IP_CLIENTE_MYSQL: 172.31.89.45
+
+Wordpress_conf:
+    dominio: wordpressansible.ddns.net
+    WORDPRESS_TITLE: "Sitio web de IAW"
+    WORDPRESS_ADMIN: admin
+    WORDPRESS_PASS: admin
+    WORDPRESS_email: demo@demo.com
+
+certbot:
+    email: demo@demo.com
+    domain: wordpressansible.ddns.net

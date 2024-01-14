@@ -1,0 +1,29 @@
+---
+- name: Playbook para instalar la pila LAMP en el Backend
+  hosts: backend
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+  
+  tasks:
+
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+
+    - name: Instalar el sistema gestor de bases de datos MySQL
+      apt:
+        name: mysql-server
+        state: present
+    
+    - name: Configuramos MySQL para permitir conexiones desde cualquier interfaz
+      replace:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: 127.0.0.1
+        replace: "{{ Wordpress.MYSQL_PRIVATE }}"
+    
+    - name: Reiniciar el servidor web Apache
+      service:
+        name: mysql
+        state: restarted

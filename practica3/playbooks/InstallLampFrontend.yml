@@ -27,7 +27,6 @@
         name: apache2
         state: restarted
 
-
     - name: Copiar el archivo de conf de apache
       copy:
         src: /home/ubuntu/Ansible_wordpress/practica3/templates/000-default.conf

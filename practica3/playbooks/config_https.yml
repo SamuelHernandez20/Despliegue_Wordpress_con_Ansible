@@ -14,8 +14,8 @@
         state: absent
 
     - name: Instalar Certbot con snap
-      snap:                                    #Hacerlo con el modulo snap mejor que command.
-        name: cerbot
+      snap:                                    
+        name: certbot
         classic: yes
         state: present
 
