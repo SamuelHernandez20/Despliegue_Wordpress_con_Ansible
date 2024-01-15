@@ -84,7 +84,12 @@
         mode: 0755
 
 
-
+    - name: Cambiar el propietario del directorio /var/www/html
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        recurse: yes
 
       
 
