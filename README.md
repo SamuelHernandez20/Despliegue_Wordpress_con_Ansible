@@ -10,7 +10,7 @@ En esta parte de aquí da comienzo el playbook donde se le establece el nombre d
 y se le pone a **become** el valor **yes** para permitir que escale privilegios.
 ```
 ---
-- name: Playbook para hacer el deploy de la aplicación web PrestaShop
+- name: Playbook para hacer el deploy de la aplicación web Wordpress
   hosts: frontend
   become: yes
 ```
@@ -90,6 +90,8 @@ Instalación del tema **sydney**:
 ```
     - name: Instalación de un tema
       command: wp theme install sydney --activate --path=/var/www/html --allow-root
+```
+Se procede a realizar la actualización de los **plugins**
 ```
     - name: Actualización plugins
       command: wp plugin update --path=/var/www/html --all --allow-root 
