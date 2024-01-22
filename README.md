@@ -257,3 +257,56 @@ Se procede a **reiniciar** el servidor web Apache:
 ```
 ### 2.1 Configuración del Backend (DeployBackend.yml):
 
+En esta parte de aquí da comienzo el playbook donde se le establece el nombre del grupo en **hosts** para indicar a que grupo de instancias queremos ejecutarlo,
+y se le pone a **become** el valor **yes** para permitir que escale privilegios.
+
+```
+---
+- name: Playbook para instalar la pila LAMP en el Backend
+  hosts: backend
+  become: yes
+```
+Importación de las **variables**:
+
+```
+  vars_files:
+    - ../vars/variables.yml
+```
+Procedo con la instalación del gestor de paquetes de **Python pip3**
+
+```
+  tasks:
+
+    - name: Instalamos el gestor de paquetes de Python pip3
+      apt: 
+        name: python3-pip
+        state: present
+```
+Instalamos el módulo de pymysql
+
+```
+    - name: Instalamos el módulo de pymysql
+      pip:
+        name: pymysql
+        state: present
+```
+Procedo a crear la base de datos (si quisiera borrar la base de datos previamente sería el mismo comando con el estado **absent**)
+```
+    - name: Crear una base de datos
+      mysql_db:
+        name: "{{ Wordpress.WORDPRESS_DB_NAME }}"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock 
+```
+Creación del **usuario** de la **base de datos**:
+```
+    - name: Crear el usuario de la base de datos
+      no_log: true
+      mysql_user:         
+        name: "{{ Wordpress.WORDPRESS_DB_USER }}"
+        password: "{{ Wordpress.WORDPRESS_DB_PASSWORD }}"
+        priv: "{{ Wordpress.WORDPRESS_DB_NAME }}.*:ALL"
+        host: "{{ Wordpress.IP_CLIENTE_MYSQL }}"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock 
+```
