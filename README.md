@@ -68,7 +68,6 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
         --path=/var/www/html \
         --allow-root
 ```
-```
     - name: Instalación de Wordpress
       command: wp core install 
         --url="{{ Wordpress_conf.dominio }}" 
@@ -78,7 +77,6 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
         --admin_email="{{ Wordpress_conf.WORDPRESS_email }}"
         --path=/var/www/html 
         --allow-root
-  ```
   ```
     - name: Actualización
       command: wp core update --path=/var/www/html --allow-root
@@ -92,35 +90,35 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
     - name: Instalamos el plugin bbpress
       command: wp plugin install bbpress --activate --path=/var/www/html --allow-root
 ```
-```
+
     - name: Instalamos el plugin  wps-hide-login
       command: wp plugin install wps-hide-login --activate --path=/var/www/html --allow-root
 ```
-```
+
     - name: Configuración del nombre de la entrada
       command: 
         wp rewrite structure '/%postname%/' \
        --path=/var/www/html \
        --allow-root
 ```
-```
+
     - name: Le configuro un nombre personalizado al nombre oculto
       command: wp option update whl_page "candado" --path=/var/www/html --allow-root
 ```
-```
+
     - name: Reescritura
       apache2_module:
         name: rewrite
         state: present
 ```
-```
+
     - name: Copiar el htaccess al /var/www/html
       copy:
         src: /home/ubuntu/Ansible_wordpress/practica3/htaccess/.htaccess
         dest: /var/www/html
         mode: 0755
 ```
-```
+
     - name: Cambiar el propietario del directorio /var/www/html
       file:
         path: /var/www/html
