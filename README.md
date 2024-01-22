@@ -22,6 +22,9 @@ En esta parte de aqui se realiza la **importación de las variables**, equivalen
 ```
 
 Aquí empezamos definiendo el **tasks**, que hace referencia a la **lista principal** de los pasos que serán ejecutados por un rol específico:
+
+Empezamos eliminando descargar previas mediante el módulo **file** con el estado **absent**
+
 ```
   tasks:
 
@@ -29,22 +32,32 @@ Aquí empezamos definiendo el **tasks**, que hace referencia a la **lista princi
       file:
         path: /tmp/wp-cli.phar 
         state: absent
-   
+ ```
+Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la instalación sin interfaz gráfica, en la **carpeta temporal** y procedo a darles los permisos de ejecución:
+
+```
     - name: Descargamos utilidad wp-cli
       get_url:
         url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
         dest: /tmp
         mode: "+x"
-    
+ ```
+
+ ```
     - name: Movemos la utlidad y de esta forma lo podemos usar sin poner la ruta completa
       command: mv /tmp/wp-cli.phar /usr/local/bin/wp
-    
+```
+
+```  
     - name: Eliminamos instalaciones previas del Wordpress
       shell: rm -rf /var/www/html/*
-  
+ ```
+
+ ```
     - name: Descargamos codigo fuente Wordpress en /var/www/html
       command: wp core download --locale=es_ES --path=/var/www/html --allow-root
-  
+  ```
+```
     - name: Creamos el archivo de configuracion
       command: 
         wp config create \
@@ -54,7 +67,8 @@ Aquí empezamos definiendo el **tasks**, que hace referencia a la **lista princi
         --dbhost={{ Wordpress.WORDPRESS_DB_HOST }} \
         --path=/var/www/html \
         --allow-root
-
+```
+```
     - name: Instalación de Wordpress
       command: wp core install 
         --url="{{ Wordpress_conf.dominio }}" 
@@ -64,46 +78,53 @@ Aquí empezamos definiendo el **tasks**, que hace referencia a la **lista princi
         --admin_email="{{ Wordpress_conf.WORDPRESS_email }}"
         --path=/var/www/html 
         --allow-root
-    
+  ```
+  ```
     - name: Actualización
       command: wp core update --path=/var/www/html --allow-root
-
+```
     - name: Instalación de un tema
       command: wp theme install sydney --activate --path=/var/www/html --allow-root
-
+```
     - name: Actualización plugins
       command: wp plugin update --path=/var/www/html --all --allow-root 
-
+```
     - name: Instalamos el plugin bbpress
       command: wp plugin install bbpress --activate --path=/var/www/html --allow-root
-
+```
+```
     - name: Instalamos el plugin  wps-hide-login
       command: wp plugin install wps-hide-login --activate --path=/var/www/html --allow-root
-
+```
+```
     - name: Configuración del nombre de la entrada
       command: 
         wp rewrite structure '/%postname%/' \
        --path=/var/www/html \
        --allow-root
-
+```
+```
     - name: Le configuro un nombre personalizado al nombre oculto
       command: wp option update whl_page "candado" --path=/var/www/html --allow-root
-
+```
+```
     - name: Reescritura
       apache2_module:
         name: rewrite
         state: present
-   
+```
+```
     - name: Copiar el htaccess al /var/www/html
       copy:
         src: /home/ubuntu/Ansible_wordpress/practica3/htaccess/.htaccess
         dest: /var/www/html
         mode: 0755
-
-
+```
+```
     - name: Cambiar el propietario del directorio /var/www/html
       file:
         path: /var/www/html
         owner: www-data
         group: www-data
         recurse: yes
+```
