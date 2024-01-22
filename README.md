@@ -84,6 +84,9 @@ Creamos el **archivo de configuración** de la base de datos de **Wordpress** y 
 ```
     - name: Actualización
       command: wp core update --path=/var/www/html --allow-root
+
+```
+Instalación del tema **sydney**:
 ```
     - name: Instalación de un tema
       command: wp theme install sydney --activate --path=/var/www/html --allow-root
