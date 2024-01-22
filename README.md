@@ -42,21 +42,22 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
         dest: /tmp
         mode: "+x"
  ```
-
+Movemos la utilidad y de esta forma lo podemos usar **sin poner la ruta completa**
  ```
     - name: Movemos la utlidad y de esta forma lo podemos usar sin poner la ruta completa
       command: mv /tmp/wp-cli.phar /usr/local/bin/wp
 ```
-
+Eliminamos **instalaciones previas** del **Wordpress**
 ```  
     - name: Eliminamos instalaciones previas del Wordpress
       shell: rm -rf /var/www/html/*
  ```
-
+Descargamos *+codigo fuente** Wordpress en **/var/www/html**
  ```
     - name: Descargamos codigo fuente Wordpress en /var/www/html
       command: wp core download --locale=es_ES --path=/var/www/html --allow-root
   ```
+Creamos el **archivo de configuración** de la base de datos de **Wordpress** y procedemos más abajo con su instalación, haciendo uso de **command**
 ```
     - name: Creamos el archivo de configuracion
       command: 
@@ -68,6 +69,7 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
         --path=/var/www/html \
         --allow-root
 ```
+
     - name: Instalación de Wordpress
       command: wp core install 
         --url="{{ Wordpress_conf.dominio }}" 
