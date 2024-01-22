@@ -125,4 +125,3 @@ Mediante el módulo **get_url** descargamos la utilidad **wp-cli** para la insta
         owner: www-data
         group: www-data
         recurse: yes
-```
