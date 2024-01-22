@@ -282,7 +282,7 @@ Procedo con la instalación del gestor de paquetes de **Python pip3**
         name: python3-pip
         state: present
 ```
-Instalamos el módulo de pymysql
+Instalamos el módulo de **pymysql**
 
 ```
     - name: Instalamos el módulo de pymysql
