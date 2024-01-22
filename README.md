@@ -52,7 +52,7 @@ Eliminamos **instalaciones previas** del **Wordpress**
     - name: Eliminamos instalaciones previas del Wordpress
       shell: rm -rf /var/www/html/*
  ```
-Descargamos *+codigo fuente** Wordpress en **/var/www/html**
+Descargamos **codigo fuente** Wordpress en **/var/www/html**
  ```
     - name: Descargamos codigo fuente Wordpress en /var/www/html
       command: wp core download --locale=es_ES --path=/var/www/html --allow-root
@@ -92,42 +92,56 @@ Instalación del tema **sydney**:
       command: wp theme install sydney --activate --path=/var/www/html --allow-root
 ```
 Se procede a realizar la actualización de los **plugins**
+
 ```
     - name: Actualización plugins
       command: wp plugin update --path=/var/www/html --all --allow-root 
 ```
+Instalación del plugin **bbpress**:
+```
     - name: Instalamos el plugin bbpress
       command: wp plugin install bbpress --activate --path=/var/www/html --allow-root
 ```
+Instalamos el plugin  **wps-hide-login**
 
+```
     - name: Instalamos el plugin  wps-hide-login
       command: wp plugin install wps-hide-login --activate --path=/var/www/html --allow-root
 ```
+Configuración del **nombre de la entrada**
 
+```
     - name: Configuración del nombre de la entrada
       command: 
         wp rewrite structure '/%postname%/' \
        --path=/var/www/html \
        --allow-root
 ```
-
+Le configuro un **nombre personalizado** al **nombre oculto**, en mi caso "candado"
+```
     - name: Le configuro un nombre personalizado al nombre oculto
       command: wp option update whl_page "candado" --path=/var/www/html --allow-root
 ```
+Mediante las siguientes sentencias se habilita la **reescritura**:
 
+```
     - name: Reescritura
       apache2_module:
         name: rewrite
         state: present
 ```
+Copiar el htaccess al **/var/www/html**
 
+```
     - name: Copiar el htaccess al /var/www/html
       copy:
         src: /home/ubuntu/Ansible_wordpress/practica3/htaccess/.htaccess
         dest: /var/www/html
         mode: 0755
 ```
-
+Cambiar el propietario del directorio **/var/www/html** por **www-data**
+ 
+ ```
     - name: Cambiar el propietario del directorio /var/www/html
       file:
         path: /var/www/html
