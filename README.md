@@ -19,6 +19,7 @@ y se le pone a **become** el valor **yes** para permitir que escale privilegios.
   vars_files:
     - ../vars/variables.yml
 ```
+
   tasks:
 
     - name: Eliminar descargas previas
