@@ -209,4 +209,6 @@ Cambiar el propietario del directorio **/var/www/html** por **www-data**
         group: www-data
         recurse: yes
  ```
-## 1. Configuración del Frontend:
+### 2.2 Configuración del Backend (InstallLampbackend.yml):
+
+
