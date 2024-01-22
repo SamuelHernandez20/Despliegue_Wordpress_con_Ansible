@@ -14,12 +14,15 @@ y se le pone a **become** el valor **yes** para permitir que escale privilegios.
   hosts: frontend
   become: yes
 ```
+En esta parte de aqui se realiza la **importación de las variables**, equivalente al **source**
 
 ```
   vars_files:
     - ../vars/variables.yml
 ```
 
+Aquí empezamos definiendo el **tasks**, que hace referencia a la **lista principal** de los pasos que serán ejecutados por un rol específico:
+```
   tasks:
 
     - name: Eliminar descargas previas
