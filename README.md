@@ -107,7 +107,7 @@ Movemos la utilidad y de esta forma lo podemos usar **sin poner la ruta completa
     - name: Movemos la utlidad y de esta forma lo podemos usar sin poner la ruta completa
       command: mv /tmp/wp-cli.phar /usr/local/bin/wp
 ```
-Eliminamos **instalaciones previas** del **Wordpress**
+Eliminamos **instalaciones previas** del **Wordpress** (mediante **shell** porque con el modulo **file** no las borraba)
 ```  
     - name: Eliminamos instalaciones previas del Wordpress
       shell: rm -rf /var/www/html/*
@@ -312,3 +312,47 @@ Creación del **usuario** de la **base de datos**:
 ```
 ### 2.2 Despliegue del cerbot (config_https.yml):
 
+En esta parte de aquí da comienzo el playbook donde se le establece el nombre del grupo en **hosts** para indicar a que grupo de instancias queremos ejecutarlo,
+y se le pone a **become** el valor **yes** para permitir que escale privilegios.
+
+```
+---
+- name: Playbook para configurar HTTPS
+  hosts: frontend
+  become: yes
+```
+
+Importación de las variables:
+
+```
+  vars_files:
+    - ../vars/variables.yml
+```
+Desinstalar **instalaciones previas** de **Certbot**
+```
+  tasks:
+
+    - name: Desinstalar instalaciones previas de Certbot
+      apt:
+        name: certbot
+        state: absent
+```
+Instalar **Certbot** con **snap**
+```
+    - name: Instalar Certbot con snap
+      snap:                                    
+        name: certbot
+        classic: yes
+        state: present
+```
+Solicitar y configurar **certificado SSL/TLS** a **Let's Encrypt** con **certbot**
+```
+    - name: Solicitar y configurar certificado SSL/TLS a Let's Encrypt con certbot
+      command:
+        certbot --apache \
+        -m {{ certbot.email }} \
+        --agree-tos \
+        --no-eff-email \
+        --non-interactive \
+        -d {{ certbot.domain }}
+```
