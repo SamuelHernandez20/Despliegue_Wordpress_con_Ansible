@@ -79,7 +79,9 @@ Creamos el **archivo de configuración** de la base de datos de **Wordpress** y 
         --admin_email="{{ Wordpress_conf.WORDPRESS_email }}"
         --path=/var/www/html 
         --allow-root
-  ```
+ 
+ Actualización:
+```
     - name: Actualización
       command: wp core update --path=/var/www/html --allow-root
 ```
