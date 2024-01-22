@@ -211,4 +211,47 @@ Cambiar el propietario del directorio **/var/www/html** por **www-data**
  ```
 ### 2.2 Configuración del Backend (InstallLampbackend.yml):
 
+Comienzo del **playbook**:
+```
+---
+- name: Playbook para instalar la pila LAMP en el Backend
+  hosts: backend
+  become: yes
+```
+En esta parte de aqui se realiza la **importación de las variables**, equivalente al **source**
+```
+  vars_files:
+    - ../vars/variables.yml
+```
+Mediante las siguientees sentencias procedo a **actualizar** los repositorios:
+```
+  tasks:
 
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+```
+Instalar el sistema gestor de bases de datos **MySQL**
+```
+    - name: Instalar el sistema gestor de bases de datos MySQL
+      apt:
+        name: mysql-server
+        state: present
+```
+Configuramos **MySQL** para **permitir conexiones** desde **cualquier interfaz**
+(mediante el siguiente comando hacemos algo equivalente al comando **sed**)
+```    
+    - name: Configuramos MySQL para permitir conexiones desde cualquier interfaz
+      replace:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: 127.0.0.1
+        replace: "{{ Wordpress.MYSQL_PRIVATE }}"
+ ```
+Se procede a **reiniciar** el servidor web Apache:
+```   
+    - name: Reiniciar el servidor web Apache
+      service:
+        name: mysql
+        state: restarted
+
+```
