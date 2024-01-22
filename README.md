@@ -4,7 +4,67 @@ En esta práctica se realizará la adaptación de la instalación del Wordpress 
 Para ello se tendrá una serie de playbooks para ejecutarlos desde un mismo nodo de control sin tener que estar accediendo por ssh a cada una de las máquinas salvo
 para realizar alguna que otra prueba inicial de conexión. Nuevamente tendremos los **Deploys** para el **backend** y **frontend**, asi como los **installLamp** para cada uno de ellos, y un config_https para el **cerbot**. Al final se tendrá un archivo **main.yml** con las rutas de **cada playbook** para ejecutarlos **todos a la vez** cuando se sepa que **individualmente** están **correctamente configurados**.
 
-## 1. Configuración del Frontend (Deploy):
+## 1. Configuración del Frontend (InstallLampFrontend.yml):
+
+En esta parte de aquí da comienzo el playbook donde se le establece el nombre del grupo en **hosts** para indicar a que grupo de instancias queremos ejecutarlo,
+y se le pone a **become** el valor **yes** para permitir que escale privilegios.
+
+```
+---
+- name: Playbook para instalar la pila LAMP
+  hosts: frontend
+  become: yes
+```
+Mediante las siguientees sentencias procedo a **actualizar** los repositorios:
+```
+  tasks:
+
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+```
+Aqui procedo con la **instalación** del servidor web **Apache**
+```
+    - name: Instalar el servidor web Apache
+      apt:
+        name: apache2
+        state: present
+```
+Instalar **PHP** y los **módulos necesarios**:
+```
+    - name: Instalar PHP y los módulos necesarios
+      apt: 
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+        state: present
+```
+**Reiniciar** el servidor web **Apache**:
+
+```
+    - name: Reiniciar el servidor web Apache
+      service:
+        name: apache2
+        state: restarted
+```
+**Copiar** el **archivo de configuración** de apache hacia el **/var/www/html**
+```
+    - name: Copiar el archivo de conf de apache
+      copy:
+        src: /home/ubuntu/Ansible_wordpress/practica3/templates/000-default.conf
+        dest: /var/www/html/
+        mode: 0755
+```
+**Copiar** el archivo **phpinfo.php**
+```   
+    - name: Copiar el archivo phpinfo.php
+      copy:
+        src: /home/ubuntu/Ansible_wordpress/practica3/php/phpinfo.php
+        dest: /var/www/html/
+        mode: 0755
+```
+## 1.1 Configuración del Frontend (DeployFrontend.yml):
 
 En esta parte de aquí da comienzo el playbook donde se le establece el nombre del grupo en **hosts** para indicar a que grupo de instancias queremos ejecutarlo,
 y se le pone a **become** el valor **yes** para permitir que escale privilegios.
