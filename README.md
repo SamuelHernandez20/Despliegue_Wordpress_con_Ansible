@@ -209,7 +209,7 @@ Cambiar el propietario del directorio **/var/www/html** por **www-data**
         group: www-data
         recurse: yes
  ```
-### 2.2 Configuración del Backend (InstallLampbackend.yml):
+### 2 Configuración del Backend (InstallLampbackend.yml):
 
 Comienzo del **playbook**:
 ```
@@ -255,3 +255,5 @@ Se procede a **reiniciar** el servidor web Apache:
         state: restarted
 
 ```
+### 2.1 Configuración del Backend (DeployBackend.yml):
+
