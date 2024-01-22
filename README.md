@@ -310,3 +310,5 @@ Creación del **usuario** de la **base de datos**:
         state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock 
 ```
+### 2.2 Despliegue del cerbot (config_https.yml):
+
